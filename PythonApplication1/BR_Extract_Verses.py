@@ -3,8 +3,21 @@ import xml.etree.ElementTree as ET
 
 def extract_verses(xml_file):
     """
-    Parses a Zefania XML file and extracts verses in a dictionary format.
+    Parses a Zefania XML file (or extracts from ZIP) and extracts verses in a dictionary format.
     """
+    extracted_file = None
+
+    # If the input file is a ZIP, extract the first XML file
+    if xml_file.endswith(".zip"):
+        with zipfile.ZipFile(xml_file, 'r') as zip_ref:
+            xml_files = [f for f in zip_ref.namelist() if f.endswith(".xml")]
+            if not xml_files:
+                raise ValueError("No XML file found in the ZIP archive.")
+            
+            extracted_file = xml_files[0]  # Select the first XML file found
+            zip_ref.extract(extracted_file)  # Extract it to the current directory
+            xml_file = extracted_file  # Update the filename to parse
+
     tree = ET.parse(xml_file)
     root = tree.getroot()
 
