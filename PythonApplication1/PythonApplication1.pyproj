@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>51ce269e-6b70-424e-8b8b-39eee71ea47b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>BR-Extract-Verses.py</StartupFile>
+    <StartupFile>BR_Create_Dictionary.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,8 +21,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BR-Extract-Verses.py" />
-    <Compile Include="PythonApplication1.py" />
+    <Compile Include="BR_Extract_Verses.py" />
+    <Compile Include="BR_Create_Dictionary.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
