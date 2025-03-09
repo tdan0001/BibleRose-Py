@@ -18,8 +18,14 @@ def build_strongs_dictionary(verse_strong):
     for strongs, counter in word_counts.items():
         strongs_dict[strongs] = [word for word, _ in counter.most_common()]
 
-     # Sort Strong's numbers in ascending order
-    strongs_dict = dict(sorted(strongs_dict.items(), key=lambda x: int(x[0][1:])))  # Sort numerically
+    # Sort Strong's numbers by alphabetic prefix and then numerically
+    def sort_key(item):
+        strongs = item[0]
+        alpha_part = ''.join(filter(str.isalpha, strongs))
+        numeric_part = int(''.join(filter(str.isdigit, strongs)))
+        return (alpha_part, numeric_part)
+
+    strongs_dict = dict(sorted(strongs_dict.items(), key=sort_key))
 
     return strongs_dict
 
@@ -36,7 +42,9 @@ if __name__ == '__main__':
     # verse_strong = extract_verses("your_file.xml")  # Assuming you've run the parsing script
     # strongs_dict = build_strongs_dictionary(verse_strong)
     print("Extracting verses from Zefania XML file...")
-    xml_file = "D:\\BibleDataXml\\SF_2009-01-20_GRC_GNTWH_(WESTCOTT-HORT GREEK NEW TESTAMENT(STRONGS)).xml"  # Update with actual filename
+    #xml_file = "D:\\BibleDataXml\\SF_2009-01-20_GRC_GNTWH_(WESTCOTT-HORT GREEK NEW TESTAMENT(STRONGS)).xml"  # Update with actual filename
+    #xml_file = "D:\\BibleDataXml\\SF_2009-01-20_GRC_GNTTR_(TEXTUS RECEPTUS NT(STRONGS)).xml"
+    xml_file = "D:\\BibleDataXml\\SF_2009-01-20_ENG_KJV_(KJV+).xml"
     verse_strong = extract_verses(xml_file)
     print("Creating Stromgs Dictionary")
     strongs_dict = build_strongs_dictionary(verse_strong)

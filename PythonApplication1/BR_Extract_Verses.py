@@ -33,7 +33,7 @@ def extract_verses(xml_file):
                 strongslist = []
                 for greek in verse.findall("gr"):
                     strongs = greek.get("str")
-                    word = greek.text.strip()
+                    word = greek.text.strip() if greek.text else " "
                     strongslist.append([strongs, word])
                 verse_num = verse.get("vnumber")
               #  verse_text = "".join(verse.itertext())  # Extract text inside verse
