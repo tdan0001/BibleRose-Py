@@ -32,6 +32,9 @@ def build_strongs_dictionary(verse_strong):
         numeric_part = int(''.join(filter(str.isdigit, strongs)))
         return (alpha_part, numeric_part)
 
+    
+    strongs_dict = dict(sorted(strongs_dict.items(), key=sort_key))
+
     final_dict = dict(sorted(final_dict.items(), key=sort_key))
 
     return final_dict
@@ -45,16 +48,19 @@ def write_strongs_dictionary(strongs_dict, output_file):
         json.dump(strongs_dict, f, ensure_ascii=False, indent=4)
 
 if __name__ == '__main__':
+    import os 
+
+    BibleRoseDataDir = os.getenv('BibleRoseData')
     # Example usage:
     # verse_strong = extract_verses("your_file.xml")  # Assuming you've run the parsing script
     # strongs_dict = build_strongs_dictionary(verse_strong)
     print("Extracting verses from Zefania XML file...")
-    #xml_file = "D:\\BibleDataXml\\SF_2009-01-20_GRC_GNTWH_(WESTCOTT-HORT GREEK NEW TESTAMENT(STRONGS)).xml"  # Update with actual filename
-    #xml_file = "D:\\BibleDataXml\\SF_2009-01-20_GRC_GNTTR_(TEXTUS RECEPTUS NT(STRONGS)).xml"
-    xml_file = "D:\\BibleDataXml\\SF_2009-01-20_ENG_KJV_(KJV+).xml"
+    #xml_file = BibleRoseDataDir + "\\SF_2009-01-20_GRC_GNTWH_(WESTCOTT-HORT GREEK NEW TESTAMENT(STRONGS)).xml"  # Update with actual filename
+    #xml_file = BibleRoseDataDir + "\\SF_2009-01-20_GRC_GNTTR_(TEXTUS RECEPTUS NT(STRONGS)).xml"
+    xml_file = BibleRoseDataDir + "\\SF_2009-01-20_ENG_KJV_(KJV+).xml"
     output_file = xml_file.rsplit(".xml", 1)[0] + ".BRdict.json"
     verse_strong = extract_verses(xml_file)
     print("Creating Stromgs Dictionary")
     strongs_dict = build_strongs_dictionary(verse_strong)
-    write_strongs_dictionary(strongs_dict, "strongs_dict.json")
+    write_strongs_dictionary(strongs_dict, output_file)
     print("Strong's dictionary saved successfully.")

@@ -45,9 +45,14 @@ def extract_verses(xml_file):
 
 
 if __name__ == '__main__':
+    import os 
+
+    BibleRoseDataDir = os.getenv('BibleRoseData')
+
+
     # Example usage
     print("Extracting verses from Zefania XML file...")
-    xml_file = "D:\\BibleDataXml\\SF_2009-01-20_GRC_GNTWH_(WESTCOTT-HORT GREEK NEW TESTAMENT(STRONGS)).xml"  # Update with actual filename
+    xml_file = BibleRoseDataDir + "\\SF_2009-01-20_GRC_GNTWH_(WESTCOTT-HORT GREEK NEW TESTAMENT(STRONGS)).xml"  # Update with actual filename
     verses = extract_verses(xml_file)
 
     # Print a sample
