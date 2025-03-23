@@ -5,7 +5,7 @@
     <ProjectGuid>51ce269e-6b70-424e-8b8b-39eee71ea47b</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>BR_Create_Dictionary.py</StartupFile>
+    <StartupFile>BR_Combine_Dictionary.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

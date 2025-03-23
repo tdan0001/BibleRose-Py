@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 
 
-def extract_verses(xml_file):
+def extract_verses(xml_file, numbers_only=False):
     """
     Parses a Zefania XML file (or extracts from ZIP) and extracts verses in a dictionary format.
     """
@@ -26,7 +26,7 @@ def extract_verses(xml_file):
 
     # Iterate through the XML tree
     for book in root.findall(".//BIBLEBOOK"):  # <BIBLEBOOK bnumber="40" bname="Matthäus" bsname="Mt">
-        book_name = book.get("bname")
+        book_name = book.get("bnumber")
         for chapter in book.findall("CHAPTER"):  # <CHAPTER cnumber="1">
             chapter_num = chapter.get("cnumber")
             for verse in chapter.findall("VERS"):  # <VERS vnumber="1">
@@ -34,7 +34,11 @@ def extract_verses(xml_file):
                 for greek in verse.findall("gr"):
                     strongs = greek.get("str")
                     word = greek.text.strip() if greek.text else " "
-                    strongslist.append([strongs, word])
+                    if numbers_only:
+                        if not(strongslist.__contains__(strongs)) :
+                            strongslist.append(strongs)
+                    else:
+                        strongslist.append([strongs, word])
                 verse_num = verse.get("vnumber")
               #  verse_text = "".join(verse.itertext())  # Extract text inside verse
                 verse_ref = f"{book_name} {chapter_num}:{verse_num}"
