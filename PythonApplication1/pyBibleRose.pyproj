@@ -5,7 +5,7 @@
     <ProjectGuid>51ce269e-6b70-424e-8b8b-39eee71ea47b</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>BR_Combine_Dictionary.py</StartupFile>
+    <StartupFile>BR_Parse_Strongs.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +25,9 @@
     <Compile Include="BR_Combine_Dictionary.py" />
     <Compile Include="BR_Extract_Verses.py" />
     <Compile Include="BR_Create_Dictionary.py" />
+    <Compile Include="BR_Parse_Strongs.py" />
+    <Compile Include="BR_Text_Example.py" />
+    <Compile Include="BR_Text_Viewer.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

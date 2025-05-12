@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 def extract_verses(xml_file, numbers_only=False):
     """
     Parses a Zefania XML file (or extracts from ZIP) and extracts verses in a dictionary format.
+    Source files can be found at https://github.com/kohelet-net-admin/zefania-xml-bibles/tree/master
     """
     extracted_file = None
 

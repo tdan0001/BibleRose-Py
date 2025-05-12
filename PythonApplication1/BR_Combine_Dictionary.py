@@ -23,6 +23,40 @@ def merge_dictionaries(dict1, dict2):
 
     return merged_dict
 
+
+def merge_multilang_dicts(dict1, dict2):
+    """
+    Merges two multi-language Strong's dictionaries.
+    Preserves definitions, original text, and words across multiple languages.
+    """
+    merged_dict = dict1.copy()
+
+    for strongs_number, entry in dict2.items():
+        if strongs_number not in merged_dict:
+            # If Strong's number is missing, add the entire entry
+            merged_dict[strongs_number] = entry
+        else:
+            # Merge each language section
+            for key, value in entry.items():
+                if key in ["Definition", "Original"]:
+                    # Ensure definition and original text remain unchanged
+                    if key not in merged_dict[strongs_number]:
+                        merged_dict[strongs_number][key] = value
+                else:
+                    # Handle language-specific word lists
+                    if key not in merged_dict[strongs_number]:
+                        merged_dict[strongs_number][key] = value
+                    else:
+                        existing_words = set(merged_dict[strongs_number][key])
+                        for word in value:
+                            if word not in existing_words:
+                                merged_dict[strongs_number][key].append(word)
+                                existing_words.add(word)
+
+    return merged_dict
+
+
+
 def load_strongs_dictionary(file_path):
     """
     Loads a Strong's dictionary from a JSON file.
