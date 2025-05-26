@@ -5,7 +5,7 @@
     <ProjectGuid>51ce269e-6b70-424e-8b8b-39eee71ea47b</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>BR_Parse_Strongs.py</StartupFile>
+    <StartupFile>BR_Add_Words.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,6 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BR_Add_Words.py" />
     <Compile Include="BR_Combine_Dictionary.py" />
     <Compile Include="BR_Extract_Verses.py" />
     <Compile Include="BR_Create_Dictionary.py" />
