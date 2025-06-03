@@ -1,9 +1,9 @@
 import json
 import os
 from collections import defaultdict, Counter
-from BR_Extract_Verses import extract_verses
+from BR_Extract_Verses_From_Zef import extract_verses_from_zef
 
-def build_strongs_dictionary(verse_strong):
+def build_strongs_words_from_zef(verse_strong):
     """
     Creates a dictionary mapping Strong's numbers to words, sorted by frequency.
     """
@@ -49,8 +49,8 @@ if __name__ == '__main__':
         full_path = os.path.join(BibleRoseDataDir, xml_file)
         output_file = full_path.rsplit(".xml", 1)[0] + ".BRdict.json"
         print(f"Processing {xml_file}...")
-        verse_strong = extract_verses(full_path)
+        verse_strong = extract_verses_from_zef(full_path)
         print("Creating Strong's Dictionary")
-        strongs_dict = build_strongs_dictionary(verse_strong)
+        strongs_dict = build_strongs_words_from_zef(verse_strong)
         write_strongs_dictionary(strongs_dict, output_file)
         print(f"Strong's dictionary for {xml_file} saved successfully.")

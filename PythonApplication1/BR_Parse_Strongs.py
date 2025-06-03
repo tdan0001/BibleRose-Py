@@ -67,5 +67,5 @@ if __name__ == "__main__":
 
     # Optional: save to JSON file
     import json
-    with open(BibleRoseDataDir + "\BR_strongs_greek.json", "w", encoding="utf-8") as f:
+    with open(BibleRoseDataDir + "\\BR_strongs_greek.json", "w", encoding="utf-8") as f:
         json.dump(strongs_data, f, ensure_ascii=False, indent=2)

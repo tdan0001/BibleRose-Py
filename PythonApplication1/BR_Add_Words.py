@@ -89,7 +89,7 @@ if __name__ == '__main__':
     strongs_data = parse_strongs_greek_xml(url)
 
 
-
+    
 
     engFiles =[
         BibleRoseDataDir + "\\Dict\\SF_2009-01-20_ENG_KJV_(KJV+).BRdict.json",
@@ -116,5 +116,5 @@ if __name__ == '__main__':
 
 
     # Optional: save to JSON file
-    with open(BibleRoseDataDir + "\BR_strongs_greek1.json", "w", encoding="utf-8") as f:
+    with open(BibleRoseDataDir + "\\BR_strongs_greek1.json", "w", encoding="utf-8") as f:
         json.dump(strongs_data, f, ensure_ascii=False, indent=2)
