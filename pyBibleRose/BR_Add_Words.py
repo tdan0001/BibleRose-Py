@@ -25,41 +25,37 @@ def Add_Strongs_Words(mainDictionary, Language, AddedWords, source=None):
             mainDictionary["Sources"].append(source)
 
     for strongs_number, words in AddedWords.items():
-        # Normalize Strong's key
-        if not strongs_number.startswith(("G", "H")):
-            strongs_key = f"{strongs_number:>0}"
-            if strongs_key in mainDictionary.get("Strongs", {}):
-                pass  # keep as-is
-            else:
-                orig_lang = mainDictionary.get("Original", "")
-                prefix = "G" if orig_lang.upper() == "GREEK" else "H" if orig_lang.upper() == "HEBREW" else ""
-                strongs_trim = strongs_number.replace(" ", "")
-                if not strongs_trim.isdigit():
-                    continue
-                strongs_key = f"{prefix}{int(strongs_trim):05d}"
+        # Normalize Strong's key as integer: positive for G, negative for H, plain int otherwise
+        strongs_trim = strongs_number.strip().upper()
+        if strongs_trim.startswith("G"):
+            strongs_index = int(strongs_trim[1:])
+        elif strongs_trim.startswith("H"):
+            strongs_index = -int(strongs_trim[1:])
+        elif strongs_trim.isdigit():
+            strongs_index = int(strongs_trim)
         else:
-            strongs_key = strongs_number
+            strongs_index = 19999  # Default index for invalid Strong's numbers
+            continue
 
         # Ensure the Strong's entry exists
         if "Strongs" not in mainDictionary:
             mainDictionary["Strongs"] = {}
 
-        if strongs_key not in mainDictionary["Strongs"]:
-            mainDictionary["Strongs"][strongs_key] = {
+        if strongs_index not in mainDictionary["Strongs"]:
+            mainDictionary["Strongs"][strongs_index] = {
                 "Definition": "",
-                "Original": [],
                 "Transliteration": "",
                 "Pronunciation": "",
-                "Derivation": "",
-                "KJV": [],
-                "SeeAlso": [],
-                "ENG": [],
+                "SeeAlso": "",
+                "GRE":  [],
+                "ENG":  [],
                 "GER": [],
                 "FRE": [],
                 "SPA": [],
+                "RUS": []
             }
 
-        entry = mainDictionary["Strongs"][strongs_key]
+        entry = mainDictionary["Strongs"][strongs_index]
 
         # Ensure language list exists
         if Language not in entry:
@@ -88,9 +84,6 @@ if __name__ == '__main__':
     url = "https://raw.githubusercontent.com/openscriptures/strongs/refs/heads/master/greek/StrongsGreekDictionaryXML_1.4/strongsgreek.xml"
     strongs_data = parse_strongs_greek_xml(url)
 
-
-    
-
     engFiles =[
         BibleRoseDataDir + "\\Dict\\SF_2009-01-20_ENG_KJV_(KJV+).BRdict.json",
         BibleRoseDataDir + "\\Dict\\SF_2009-01-22_ENG_RWEBSTER_(REVISED 1833 WEBSTER VERSION WITH STRONGS).BRdict.json",
@@ -112,7 +105,7 @@ if __name__ == '__main__':
         if not os.path.exists(file):
             raise FileNotFoundError(f"File not found: {file}")
         engJson = load_strongs_dictionary(file)
-        Add_Strongs_Words(strongs_data, "Original", engJson, file)
+        Add_Strongs_Words(strongs_data, "GRE", engJson, file)
 
 
     # Optional: save to JSON file

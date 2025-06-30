@@ -38,6 +38,7 @@ def write_strongs_dictionary(strongs_dict, output_file):
         json.dump(strongs_dict, f, ensure_ascii=False, indent=4)
 
 if __name__ == '__main__':
+    #Test code that builds a Strong's dictionary from Zefania XML files in the BibleRoseData directory.
     BibleRoseDataDir = os.getenv('BibleRoseData')
     if not BibleRoseDataDir:
         raise EnvironmentError("BibleRoseData environment variable is not set.")
