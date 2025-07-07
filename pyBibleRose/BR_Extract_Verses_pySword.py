@@ -2,6 +2,7 @@ import pysword
 import re
 from collections import defaultdict
 from pysword.modules import SwordModules
+import requests
 from BR_Add_Words import Add_Strongs_Words
 
 
@@ -33,6 +34,10 @@ def add_strongs_from_sword(mainDictionary):
         try:
             print("Processing Sword module: " + mod)
             modx = modules._modules[mod]  #gets the metadata for the module
+            if (modx['feature'].find('StrongsNumbers') < 0):
+                print ("Module does not have StrongsNumbers")
+                continue
+           
             modLang = modx['lang']
             if modLang == "en": modLang = "ENG"
             if modLang == "fr": modLang = "FRE"
@@ -49,6 +54,17 @@ def add_strongs_from_sword(mainDictionary):
         except Exception as e:
             print(f"Error processing module: {e}")  # mostly catches bibles that dont have a new testament 
             continue
+    try:
+        # Download XML from araSvd URL since the module is broken in pysword
+        araSvd = "https://raw.githubusercontent.com/STEPBible/STEPBible-Data/refs/heads/master/Tagged-Bibles/Arabic%20Bibles/AraSVD_sb-6.0.1-CC-BY-SA..xml"
+        response = requests.get(araSvd)
+        if response.status_code == 200:
+            xml_string = response.text
+            strongs_data = parse_strongs_from_pysword(xml_string)
+            Add_Strongs_Words(mainDictionary, "Arabic", strongs_data, source=araSvd)
+    except Exception as e:
+        print(f"Error processing module: {e}")  # mostly catches bibles that dont have a new testament 
+      
 
 
 if __name__ == '__main__':
@@ -59,13 +75,21 @@ if __name__ == '__main__':
     modules = SwordModules()
     found_modules = modules.parse_modules()
     bible = modules.get_bible_from_module(u'RV_th')
+    modx = modules._modules[u'RV_th']  #gets the metadata for the module
+    x = modx['feature'].find('StrongsNumbers') 
+
+    print (x)
 
     newTestamentBooks = ['Matt', 'Mark', 'Luke', 'John', 'Acts', 'Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim', '2Tim', 'Titus', 'Phlm', 'Hebrews', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John', 'Jude', 'Rev'];
 
     output = bible.get(books=newTestamentBooks, clean=False)
     strongs_data = parse_strongs_from_pysword(output)
 
-    print (strongs_data)
+   # print (strongs_data)
+
+
+
+
 
     # Following Sword modules were loaded at time of testing as they contained strongs numbers:
     # ABP, abpen_sb, abpgk_sb, ABPGRK, Antoniades, Byz, ChiUn, ChiUns, CzeCSP, Darby, deu1912eb, 

@@ -1,3 +1,4 @@
+import string
 import xml.etree.ElementTree as ET
 import requests
 import os
@@ -5,7 +6,7 @@ from collections import defaultdict
 from BR_Parse_Strongs import parse_strongs_greek_xml
 import json
 
-def Add_Strongs_Words(mainDictionary, Language, AddedWords, source=None):
+def Add_Strongs_Words(mainDictionary, Language, AddedWords, source=None, addHebrew=False, addInvalid=False):
     """
     Adds word mappings to a master Strong's dictionary under the given language
     and optionally adds a source to the Sources list.
@@ -31,11 +32,14 @@ def Add_Strongs_Words(mainDictionary, Language, AddedWords, source=None):
             strongs_index = int(strongs_trim[1:])
         elif strongs_trim.startswith("H"):
             strongs_index = -int(strongs_trim[1:])
+            if not addHebrew:
+                continue
         elif strongs_trim.isdigit():
             strongs_index = int(strongs_trim)
         else:
             strongs_index = 19999  # Default index for invalid Strong's numbers
-            continue
+            if not addInvalid:
+                continue
 
         # Ensure the Strong's entry exists
         if "Strongs" not in mainDictionary:
@@ -61,12 +65,19 @@ def Add_Strongs_Words(mainDictionary, Language, AddedWords, source=None):
         if Language not in entry:
             entry[Language] = []
 
-        # Add unique words
-        existing_words = set(entry[Language])
+        # Add unique words (case-insensitive, exclude multi-word entries if any component exists)
+        existing_words_lower = {w.lower() for w in entry[Language]}
         for word in words:
-            if word not in existing_words:
-                entry[Language].append(word)
-                existing_words.add(word)
+            word_stripped = word.rstrip(string.punctuation)
+            word_lower = word_stripped.lower()
+            # Exclude multi-word entries if any component is already present
+            if " " in word_stripped:
+                components = [w.rstrip(string.punctuation).lower() for w in word_stripped.split()]
+                if any(comp in existing_words_lower for comp in components):
+                    continue  # Skip this multi-word entry
+            if word_lower not in existing_words_lower:
+                entry[Language].append(word_stripped)
+                existing_words_lower.add(word_lower)
 
 
 def load_strongs_dictionary(file_path):
