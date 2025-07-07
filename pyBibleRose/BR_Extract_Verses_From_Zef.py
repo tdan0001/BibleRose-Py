@@ -30,7 +30,7 @@ def extract_verses_from_zef(xml_file, numbers_only=False):
     verse_strong = {}
 
     # Iterate through the XML tree
-    for book in root.findall(".//BIBLEBOOK"):  # <BIBLEBOOK bnumber="40" bname="Matthäus" bsname="Mt">
+    for book in root.findall(".//BIBLEBOOK"):  # <BIBLEBOOK bnumber="40" bname="Matthï¿½us" bsname="Mt">
         book_name = book.get("bnumber")
         for chapter in book.findall("CHAPTER"):  # <CHAPTER cnumber="1">
             chapter_num = chapter.get("cnumber")
