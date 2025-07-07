@@ -71,15 +71,18 @@ if __name__ == '__main__':
     # Example usage
     print("Extracting verses from Zefania XML file...")
 
-    # Test case using a bible from a known repository
-    zefURL = "https://sourceforge.net/projects/zefania-sharp/files/Bibles/ENG/Revised%201833%20Webster%20Version%20with%20Strongs/SF_2009-01-22_ENG_RWEBSTER_%28REVISED%201833%20WEBSTER%20VERSION%20WITH%20STRONGS%29.zip/download"
-    verses = extract_verses_from_zef_url(zefURL, ".zip")
-    
     #old test case using a local XML file
     # import os 
     # BibleRoseDataDir = os.getenv('BibleRoseData')
     # xml_file = BibleRoseDataDir + "\\SF_2009-01-20_GRC_GNTWH_(WESTCOTT-HORT GREEK NEW TESTAMENT(STRONGS)).xml"  # Update with actual filename
     # verses = extract_verses_from_zef(xml_file)
+
+
+    # Test case using a bible from a known repository
+    # zefURL = "https://sourceforge.net/projects/zefania-sharp/files/Bibles/ENG/Revised%201833%20Webster%20Version%20with%20Strongs/SF_2009-01-22_ENG_RWEBSTER_%28REVISED%201833%20WEBSTER%20VERSION%20WITH%20STRONGS%29.zip/download"
+    zefURL = "https://raw.githubusercontent.com/kohelet-net-admin/zefania-xml-bibles/refs/heads/master/Bibles/GRC/Westcott-Hort%20Greek%20NT/Strongs%20Numbers/SF_2009-01-20_GRC_GNTWH_(WESTCOTT-HORT%20GREEK%20NEW%20TESTAMENT(STRONGS)).xml"   
+    verses = extract_verses_from_zef_url(zefURL, ".xml", True)
+    
 
     # Print a sample
     for ref, text in list(verses.items())[:5]:  # Print first 5 verses
