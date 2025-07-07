@@ -2,6 +2,7 @@ import streamlit as st
 import json
 from BR_Extract_Verses_From_Zef import extract_verses_from_zef_url  # Replace with actual import
 import os
+import requests
 
 
 # --- Book map for combo box ---
@@ -37,6 +38,7 @@ book_map = {
 
 # --- Load Greek Strong's data ---
 zef_url = "https://raw.githubusercontent.com/kohelet-net-admin/zefania-xml-bibles/refs/heads/master/Bibles/GRC/Westcott-Hort%20Greek%20NT/Strongs%20Numbers/SF_2009-01-20_GRC_GNTWH_(WESTCOTT-HORT%20GREEK%20NEW%20TESTAMENT(STRONGS)).xml"
+mainDictionaryUrl ="https://raw.githubusercontent.com/tdan0001/BibleRose-Py/refs/heads/master/BR_strongs_greek1.json"
 st.cache_data()
 
 @st.cache_data
@@ -46,17 +48,22 @@ greek_verses = load_verse_data()
 
 @st.cache_data
 def load_strongs_data():
-    BibleRoseDataDir = os.getenv('BibleRoseData')
-    if not BibleRoseDataDir:
-        raise EnvironmentError("BibleRoseData environment variable is not set.")
+    response = requests.get(mainDictionaryUrl)
+    if response.status_code == 200:
+         xml_string = response.text
+         return json.loads(xml_string)
+    else:
+        BibleRoseDataDir = os.getenv('BibleRoseData')
+        if not BibleRoseDataDir:
+            raise EnvironmentError("BibleRoseData environment variable is not set.")
     
-    #this file should be created by BR_Create_Main_Dictionary.py
-    strongs_file = os.path.join(BibleRoseDataDir, "BR_strongs_greek1.json")
-    if not os.path.exists(strongs_file):
-        raise FileNotFoundError(f"Strong's data file not found: {strongs_file}")
+        #this file should be created by BR_Create_Main_Dictionary.py
+        strongs_file = os.path.join(BibleRoseDataDir, "BR_strongs_greek1.json")
+        if not os.path.exists(strongs_file):
+            raise FileNotFoundError(f"Strong's data file not found: {strongs_file}")
     
-    with open(strongs_file, "r", encoding="utf-8") as f:
-        return json.load(f)
+        with open(strongs_file, "r", encoding="utf-8") as f:
+            return json.load(f)
 strongs_input = load_strongs_data()
 
 strongs_data = strongs_input.get("Strongs", {})
@@ -97,7 +104,7 @@ if st.button("Get Entries"):
                     st.markdown(f":blue[**Transliteration:**] {entry.get('Transliteration', '-')}")
                     st.markdown(f":blue[**Pronunciation:**] {entry.get('Pronunciation', '-')}")
 
-                    for lang in ["GRE", "ENG", "GER", "FRE", "SPA", "RUS", "zh-Hant", "zh-Hans", "nl"]:
+                    for lang in ["GRE", "ENG", "GER", "FRE", "SPA", "RUS", "zh-Hant", "zh-Hans", "nl", "Arabic"]:
                         if lang in entry:
                             st.markdown(f":blue[**{lang}:**] {', '.join(entry[lang])}")
             else:
