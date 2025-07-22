@@ -5,13 +5,9 @@ BibleRose uses **Strong’s Numbers** and **XML-based verse mapping** to visuali
 The name reflects the goal: unlocking cross-language understanding through layered comparison.
 
 ## Current Status:
-BibleRose is currently a **Python-based backend project**.  
+BibleRose is currently a **Python-based project**.  
 It uses [`pySword`](https://github.com/karlkleinpaste/jsword) to read some of Bible modules and extract structured text and metadata.
-
-
-## Planned Features:
-- Remove repetition from Strong’s-based language dictionaries
-- Build a visual comparison tool to explore translation differences
+Added two interfaces through steamlit
 
 > Main script: `BR_Create_Main_Dictionary.py`
 
