@@ -46,6 +46,8 @@ def load_verse_data():
     return extract_verses_from_zef_url(zef_url, ".xml", True)
 greek_verses = load_verse_data()
 
+
+# --- Load BibleRose JSON file ---
 @st.cache_data
 def load_strongs_data():
     response = requests.get(mainDictionaryUrl)
@@ -69,12 +71,14 @@ strongs_input = load_strongs_data()
 strongs_data = strongs_input.get("Strongs", {})
 
 # --- UI ---
+st.set_page_config(page_title="BibleRose Viewer")
 st.header("BibleRose Viewer")
 st.subheader("Verse to Strong's Dictionary")
 
+# Verse selection
 col1, col2, col3 = st.columns(3)
 with col1:
-    book_label = st.selectbox("Select Bible Book", list(book_map.keys()))
+    book_label = st.selectbox("Select Bible Book to AutoFill Strongs Numbers", list(book_map.keys()))
     book_number = book_map[book_label]
 with col2:
     chapter = st.number_input("Chapter", min_value=1, value=1)
